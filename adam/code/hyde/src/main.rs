@@ -30,12 +30,28 @@ fn handle_connection(mut stream: TcpStream) {
             links.push(format!("{}", post_file_path.as_path().display()));
         }
     }
+
     let mut contents = String::new();
-    for link in links {
-        contents = format!("{}<a href='/{}'>{}</a>", contents, link, link);
+
+    
+    println!("{}", String::from_utf8_lossy(&buffer[..]));
+    let mut status_code = 200;
+    let mut status_msg = "OK";
+    let get = b"GET / HTTP/1.1\r\n";
+    let hello_get = b"GET /posts/@adam/hello HTTP/1.1\r\n";
+
+    if buffer.starts_with(get) {
+        for link in links {
+            contents = format!("{}<a href='/{}'>{}</a>", contents, link, link);
+        }
+    } else if buffer.starts_with(hello_get) {
+        contents = fs::read_to_string("posts/@adam/hello/hello.md").unwrap();
+    } else {
+        status_code = 404;
+        status_msg = "Not Found";
     }
 
-    let response = format!("HTTP/1.1 200 OK\r\nContent-Length: {}\r\n\r\n{}", contents.len(), contents);
+    let response = format!("HTTP/1.1 {} {}\r\nContent-Length: {}\r\n\r\n{}", status_code, status_msg, contents.len(), contents);
 
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
