@@ -1,3 +1,7 @@
+# Simple Web Server in Rust
+
+TODO: Add link to rust book tutorial
+
 ```rust
 use std::io::prelude::*;
 use std::net::TcpListener;
@@ -24,3 +28,8 @@ fn handle_connection(mut stream: TcpStream) {
     stream.flush().unwrap();
 }
 ```
+
+Instead of returning html we want to read `posts` folder and generate page with links to each one
+
+How to create vector of strings?
+How to read filesystem?
