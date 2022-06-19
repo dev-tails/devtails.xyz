@@ -29,6 +29,16 @@ fn handle_connection(mut stream: TcpStream) {
 }
 ```
 
+# / ROUTE
+
+# /posts routes
+
+# Add wrapping HTML to post
+
+# Extract post title from path
+
+# Deploy behind nginx
+
 Instead of returning html we want to read `posts` folder and generate page with links to each one
 
 How to create vector of strings?
