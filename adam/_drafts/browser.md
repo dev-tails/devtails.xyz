@@ -1,0 +1,1 @@
+Support typescript by default
