@@ -1,4 +1,4 @@
-use std::fs;
+// src/main.rs
 use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
@@ -23,23 +23,18 @@ fn handle_connection(mut stream: TcpStream) {
     let mut status_code = 200;
     let mut status_msg = "OK";
     let get = b"GET / HTTP/1.1\r\n";
-    let hello_get = b"GET /@adam/posts/how-to-build-and-deploy-a-blog-in-rust HTTP/1.1\r\n";
+
+    let title = "Blog";
 
     if buffer.starts_with(get) {
         contents = format!("
             <html>
-                <title>dev/tails</title>
+                <title>{title}</title>
                 <body>
-                    <h1>dev/tails</h1>
-                    <a href='/@adam/posts/how-to-build-and-deploy-a-blog-in-rust'>How to Build and Deploy a Blog in Rust</a>
-                    <div>@adam - Sunday June 19, 2022</div>
-                    <!--<div><a href='/@adam'>@adam</a></div>-->
-                    <!--<div><a href='/#rust'>#rust</a></div>-->
+                    <h1>{title}</h1>
                 </body>
             </html>
-        ");
-    } else if buffer.starts_with(hello_get) {
-        contents = fs::read_to_string("site/@adam/posts/how-to-build-and-deploy-a-blog-in-rust/how-to-build-and-deploy-a-blog-in-rust.md").unwrap();
+        ", title = title);
     } else {
         status_code = 404;
         status_msg = "Not Found";
